@@ -27,9 +27,56 @@
             values (#{id}, #{userId}, #{themeId}, #{title}, #{content}, #{gmtCreated}, #{gmtModified})
     </insert>
 
+    <update id="updateArticleById" parameterType="com.xiong.article.entity.Article">
+        update tb_article set
+            <if test="userId != null">
+                user_id=#{userId},
+            </if>
+            <if test="themeId != null">
+                theme_id=#{themeId},
+            </if>
+            <if test="title != null">
+                title=#{title},
+            </if>
+            <if test="imgSrc != null">
+                img_src=#{imgSrc},
+            </if>
+            <if test="content != null">
+                content=#{content},
+            </if>
+            <if test="views != null">
+                views=#{views},
+            </if>
+            <if test="favour != null">
+                favour=#{favour},
+            </if>
+            <if test="disfavour != null">
+                disfavour=#{disfavour},
+            </if>
+            <if test="reward != null">
+                reward=#{reward},
+            </if>
+            <if test="comment != null">
+                comment=#{comment},
+            </if>
+            <if test="publish != null">
+                publish=#{publish},
+            </if>
+            <if test="isTop != null">
+                is_top=#{isTop}
+            </if>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteArticleById">
+        delete from tb_article where id = #{id}
+    </delete>
+
     <select id="findAllArticle" resultMap="BaseResultMap">
         select * from tb_article
     </select>
+
+
 
 
 </mapper>

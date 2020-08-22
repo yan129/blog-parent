@@ -32,4 +32,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public List<Article> findAllArticle() {
         return articleMapper.findAllArticle();
     }
+
+    @Override
+    public boolean updateArticleById(Article article) {
+        return articleMapper.updateArticleById(article);
+    }
+
+    @Override
+    public boolean deleteArticleById(String id) {
+        return articleMapper.deleteArticleById(id);
+    }
 }

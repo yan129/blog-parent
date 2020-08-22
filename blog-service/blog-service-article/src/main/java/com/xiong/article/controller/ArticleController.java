@@ -4,6 +4,7 @@ package com.xiong.article.controller;
 import com.xiong.article.entity.Article;
 import com.xiong.article.service.ArticleService;
 import com.xiong.common.util.R;
+import com.xiong.common.util.ResponseCode;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -43,5 +44,23 @@ public class ArticleController {
     public R<List<Article>> findAllArticle(){
         List<Article> allArticle = articleService.findAllArticle();
         return R.success(allArticle);
+    }
+
+    @ApiOperation(value = "根据ID更新文章")
+    @PostMapping("/updateArticleById")
+    public R updateArticleById(@RequestBody @Valid Article article, BindingResult errors){
+        if (errors.hasErrors()){
+            String message = errors.getFieldError().getDefaultMessage();
+            return R.error(message);
+        }
+        boolean result = articleService.updateArticleById(article);
+        return result ? R.success("文章更新成功") : R.error("文章更新失败");
+    }
+
+    @ApiOperation(value = "根据ID删除文章")
+    @DeleteMapping("/deleteArticle/{id}")
+    public R deleteArticleById(@PathVariable(value = "id", required = true) String id){
+        boolean result = articleService.deleteArticleById(id);
+        return result ? R.success("文章删除成功") : R.error(ResponseCode.ERROR.getMsg());
     }
 }

@@ -18,4 +18,8 @@ public interface ArticleService extends IService<Article> {
     void addArticle(Article article);
 
     List<Article> findAllArticle();
+
+    boolean updateArticleById(Article article);
+
+    boolean deleteArticleById(String id);
 }
