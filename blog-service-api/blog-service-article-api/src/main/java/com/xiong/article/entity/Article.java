@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -38,6 +40,7 @@ public class Article implements Serializable {
     private String userId;
 
     @ApiModelProperty(value = "分类ID")
+    @NotEmpty(message = "专题不能为空")
     private String themeId;
 
     @ApiModelProperty(value = "标题")
@@ -85,5 +88,7 @@ public class Article implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
+    @TableField(exist = false)
+    private List<String> tagIds;
 
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiong.article.mapper.ArticleTagMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xiong.article.entity.ArticleTag">
+        <id column="id" property="id" />
+        <result column="article_id" property="articleId" />
+        <result column="tag_id" property="tagId" />
+    </resultMap>
+
+    <insert id="insertATBytBatch" parameterType="java.util.List">
+        insert into tb_article_tag (id, article_id, tag_id) values
+        <foreach collection="list" item="articleTag" index="index" separator=",">
+            (#{articleTag.id}, #{articleTag.articleId}, #{articleTag.tagId})
+        </foreach>
+    </insert>
+
+</mapper>

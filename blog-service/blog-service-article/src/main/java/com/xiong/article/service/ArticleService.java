@@ -19,7 +19,7 @@ public interface ArticleService extends IService<Article> {
 
     List<Article> findAllArticle();
 
-    boolean updateArticleById(Article article);
+    int updateArticleById(Article article);
 
-    boolean deleteArticleById(String id);
+    int deleteArticleById(String id);
 }
