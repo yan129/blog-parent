@@ -2,7 +2,6 @@ package com.xiong.article.controller;
 
 
 import com.xiong.article.entity.Article;
-import com.xiong.article.entity.ArticleTag;
 import com.xiong.article.service.ArticleService;
 import com.xiong.common.util.R;
 import com.xiong.common.util.ResponseCode;
@@ -46,12 +45,13 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "保存文章")
-    @PostMapping("/save/{id}")
+    @PostMapping("/save")
     public R saveArticle(@RequestBody @Valid Article article, BindingResult errors){
         if (errors.hasErrors()){
             String message = errors.getFieldError().getDefaultMessage();
             return R.error(message);
         }
+        article.setPublish(false);
         boolean saveOrUpdate = articleService.saveOrUpdate(article);
         return saveOrUpdate ? R.success("保存成功") : R.error("保存失败");
     }

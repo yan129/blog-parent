@@ -17,5 +17,4 @@ public class GlobalExceptionHandler {
         return R.error(se.getMsg());
     }
 
-
 }

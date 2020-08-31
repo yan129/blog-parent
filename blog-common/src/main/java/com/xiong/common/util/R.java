@@ -28,6 +28,14 @@ public class R<T> implements Serializable {
         this.data = data;
     }
 
+    public R(T data) {
+        this.data = data;
+    }
+
+    public static <T> R<T> none(T data){
+        return new R(data);
+    }
+
     public static R success(){
         return new R(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMsg());
     }
@@ -36,11 +44,11 @@ public class R<T> implements Serializable {
         return new R(ResponseCode.SUCCESS.getCode(), msg);
     }
 
-    public static <T> R success(T data){
+    public static <T> R<T> success(T data){
         return new R(ResponseCode.SUCCESS.getCode(), data);
     }
 
-    public static <T> R success(String msg, T data){
+    public static <T> R<T> success(String msg, T data){
         return new R(ResponseCode.SUCCESS.getCode(), msg, data);
     }
 
@@ -52,11 +60,11 @@ public class R<T> implements Serializable {
         return new R(ResponseCode.ERROR.getCode(), msg);
     }
 
-    public static <T> R error(T data){
+    public static <T> R<T> error(T data){
         return new R(ResponseCode.ERROR.getCode(), data);
     }
 
-    public static <T> R error(String msg, T data){
+    public static <T> R<T> error(String msg, T data){
         return new R(ResponseCode.ERROR.getCode(), msg, data);
     }
 

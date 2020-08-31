@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>blog-service-article-api</module>
+        <module>blog-service-user-api</module>
     </modules>
 
     <dependencies>
