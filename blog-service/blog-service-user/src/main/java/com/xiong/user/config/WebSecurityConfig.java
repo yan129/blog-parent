@@ -1,16 +1,20 @@
 package com.xiong.user.config;
+import com.xiong.user.filter.JwtTokenFilter;
 import com.xiong.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -32,10 +36,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomAccessDeniedHandler deniedHandler;
     @Autowired
     private CustomAuthenticationEntryPoint entryPoint;
+    @Autowired
+    private CustomSessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(10);
+    }
+
+    @Bean
+    public JwtTokenFilter authenticationTokenFilterBean(){
+        return new JwtTokenFilter();
     }
 
     @Override
@@ -53,16 +64,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
-                .and().csrf().disable().authorizeRequests()
-                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-                    @Override
-                    public <O extends FilterSecurityInterceptor> O postProcess(O object) {
-                        object.setAccessDecisionManager(decisionManager); //决策管理器
-                        object.setSecurityMetadataSource(metadataSource); //安全元数据源
-                        return object;
-                    }
-                })
+        http.cors().and().csrf().disable()
+
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 使用 JWT，关闭session
+                .and()
+                .authorizeRequests()
+                .anyRequest().authenticated()
+//                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+//                    @Override
+//                    public <O extends FilterSecurityInterceptor> O postProcess(O object) {
+//                        object.setAccessDecisionManager(decisionManager); //决策管理器
+//                        object.setSecurityMetadataSource(metadataSource); //安全元数据源
+//                        return object;
+//                    }
+//                })
                 .and()
                 .formLogin()
                 .permitAll()
@@ -73,12 +89,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(failureHandler) //登录失败处理逻辑
                 .and()
                 .logout()
-                .logoutSuccessUrl("/user/logout")
-                .logoutSuccessHandler(logoutSuccessHandler)
                 .permitAll()
+                .logoutUrl("/user/logout")
+                .logoutSuccessHandler(logoutSuccessHandler)
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(deniedHandler) // 权限拦截器，提示用户没有当前权限
                 .authenticationEntryPoint(entryPoint); //匿名用户访问无权限资源时的异常处理
+//                .and()
+//                .sessionManagement()
+//                .maximumSessions(1) //同一账号同时登录最大用户数
+//                .expiredSessionStrategy(sessionInformationExpiredStrategy);
+        http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        http.headers().cacheControl();  //禁用页面缓存
     }
 }

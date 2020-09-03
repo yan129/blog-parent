@@ -18,6 +18,30 @@ public class R<T> implements Serializable {
     private String msg;
     private T data;
 
+//    public static R success(){
+//        R r = new R();
+//        r.setStatus(ResponseCode.SUCCESS.getCode());
+//        r.setMsg(ResponseCode.SUCCESS.getMsg());
+//        return r;
+//    }
+//
+//    public static R error(){
+//        R r = new R();
+//        r.setStatus(ResponseCode.ERROR.getCode());
+//        r.setMsg(ResponseCode.ERROR.getMsg());
+//        return r;
+//    }
+//
+//    public R msg(String msg){
+//        this.setMsg(msg);
+//        return this;
+//    }
+//
+//    public R data(T data){
+//        this.setData(data);
+//        return this;
+//    }
+
     public R(Integer status, String msg) {
         this.status = status;
         this.msg = msg;

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public enum ResponseCode {
 
     SUCCESS(200, "操作成功"),
-    ERROR(999, "操作失败"),
+    ERROR(1000, "操作失败"),
     SERVER_ERROR(500, "服务器异常"),
 
     PARAM_NOT_VALID(1001, "参数无效"),
@@ -33,7 +33,8 @@ public enum ResponseCode {
     USER_ACCOUNT_LOGOUT_SUCCESS(2010, "账号注销成功"),
 
     USER_NO_PERMISSION(2011, "没有访问权限"),
-    USER_REQUEST_FAILURE(2012, "请求失败，请联系管理员");
+    USER_ACCOUNT_BY_OTHERS(2012, "账号在另一台设备登录，如不是本人操作，请修改密码"),
+    USER_REQUEST_FAILURE(2013, "请求失败，请联系管理员");
 
     private Integer code;
     private String msg;

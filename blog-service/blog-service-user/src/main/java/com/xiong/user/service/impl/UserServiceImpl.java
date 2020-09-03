@@ -49,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = findUserByUsername(username.trim());
         if (StringUtils.isEmpty(user))
             throw new UsernameNotFoundException(ResponseCode.USER_ACCOUNT_NOT_EXIST.getMsg());
-        //返回用户角色
+        // 返回用户角色
         user.setRoles(findAllRolesByUserId(user.getId()));
         return user;
     }
@@ -58,8 +58,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User findUserByUsername(String username) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-//        wrapper.select("id", "nickname", "username", "password", "avatar", "remark", "gender", "enabled", "not_expired",
-//                "account_not_locked", "credentials_not_expired", "last_login_time");
         wrapper.eq("username", username);
         return baseMapper.selectOne(wrapper);
     }
@@ -73,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     // 用户注册
     @Override
     public R register(LoginVo loginVo) {
-        //如果用户名存在，返回错误
+        // 如果用户名存在，返回错误
         if (!StringUtils.isEmpty(findUserByUsername(loginVo.getUsername().trim())))
             return R.error("用户名已注册");
         StringBuffer buffer = new StringBuffer(loginVo.getUsername().trim());
