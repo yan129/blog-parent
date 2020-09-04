@@ -1,4 +1,4 @@
-package com.xiong.sms.util;
+package com.xiong.common.util;
 
 public class SmsConstants {
     public static final String SMS_PERFIX = "register:";

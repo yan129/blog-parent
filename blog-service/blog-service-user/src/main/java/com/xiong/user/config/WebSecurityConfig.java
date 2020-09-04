@@ -1,5 +1,6 @@
 package com.xiong.user.config;
 import com.xiong.user.filter.JwtTokenFilter;
+import com.xiong.user.filter.VerificationCodeFilter;
 import com.xiong.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationEntryPoint entryPoint;
     @Autowired
+    private VerificationCodeFilter verificationCodeFilter;
+    @Autowired
     private CustomSessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 
     @Bean
@@ -56,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/user/register", "/swagger-ui.html/**");
+        web.ignoring().antMatchers("/role/**","/user/sms/**", "/user/register", "/swagger-ui.html/**");
     }
 
     /**
@@ -100,6 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .sessionManagement()
 //                .maximumSessions(1) //同一账号同时登录最大用户数
 //                .expiredSessionStrategy(sessionInformationExpiredStrategy);
+        http.addFilterBefore(verificationCodeFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
         http.headers().cacheControl();  //禁用页面缓存
     }

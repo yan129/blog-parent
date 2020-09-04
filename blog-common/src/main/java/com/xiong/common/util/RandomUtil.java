@@ -1,4 +1,4 @@
-package com.xiong.sms.util;
+package com.xiong.common.util;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

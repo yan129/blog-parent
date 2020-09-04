@@ -1,16 +1,14 @@
-package com.xiong.sms;
+package com.xiong.eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-@ComponentScan(basePackages = "com.xiong")
-@EnableEurekaClient
-public class SmsApplication {
+@EnableEurekaServer //开启eureka服务
+public class EurekaApplication7001 {
     public static void main(String[] args) {
-        SpringApplication.run(SmsApplication.class, args);
+        SpringApplication.run(EurekaApplication7001.class, args);
     }
 }

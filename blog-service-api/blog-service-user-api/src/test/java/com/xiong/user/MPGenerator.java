@@ -7,7 +7,7 @@ public class MPGenerator {
 
     @Test
     public void test1(){
-        String name = "role";
+        String name = "role_permission_relation";
         com.xiong.common.util.MPGenerator.generator(name, name);
     }
 

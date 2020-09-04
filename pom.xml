@@ -6,6 +6,8 @@
         <module>blog-common</module>
         <module>blog-service-api</module>
         <module>blog-service</module>
+        <module>blog-eureka7001</module>
+        <module>blog-eureka7002</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

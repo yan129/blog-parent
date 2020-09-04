@@ -6,7 +6,10 @@ import com.xiong.common.util.R;
 import com.xiong.common.util.ResponseCode;
 import com.xiong.user.entity.Role;
 import com.xiong.user.entity.User;
+import com.xiong.user.entity.UserRoleRelation;
 import com.xiong.user.mapper.UserMapper;
+import com.xiong.user.service.RoleService;
+import com.xiong.user.service.UserRoleRelationService;
 import com.xiong.user.service.UserService;
 import com.xiong.user.vo.LoginVo;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +40,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private UserRoleRelationService userRoleRelationService;
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 重写UserDetailsService的loadUserByUsername方法，用于WebSecurityConfig类登录时自动去匹配密码
@@ -84,6 +91,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         BeanUtils.copyProperties(loginVo, user);
         user.setNickname(buffer.toString());
         boolean result = baseMapper.register(user);
+        if (result){
+            UserRoleRelation relation = new UserRoleRelation();
+            relation.setUserId(user.getUsername());
+            relation.setRoleId(roleService.findRidByRoleName("ROLE_ordinary"));
+            userRoleRelationService.save(relation);
+        }
         return result ? R.success("注册成功") : R.error("注册失败");
     }
 }
